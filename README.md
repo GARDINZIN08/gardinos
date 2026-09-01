@@ -170,4 +170,4 @@ do banco diretamente não consegue ver nada sem passar pelas senhas.
 - Anexar fotos/arquivos por OS (arte aprovada, foto do local, etc.)
 - Notificação (WhatsApp/e-mail) quando uma OS muda de status
 - Relatório financeiro por período
-- Editar/excluir uma OS já criada
+- Editar uma OS já criada (hoje só dá pra excluir, direto na tela da OS)

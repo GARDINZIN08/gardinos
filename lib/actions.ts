@@ -108,6 +108,25 @@ export async function salvarValorOS(osId: string, formData: FormData) {
   revalidatePath(`/financeiro/${osId}`);
 }
 
+// Apaga a OS e tudo ligado a ela (etapas de produção e dados financeiros
+// são removidos automaticamente pelo banco, por causa do "ON DELETE
+// CASCADE" nas tabelas etapas_producao e financeiro_os). Ação permanente,
+// sem como desfazer — por isso a confirmação fica na tela (ExcluirOS.tsx).
+export async function excluirOS(osId: string) {
+  const { error } = await supabaseAdmin
+    .from("ordens_servico")
+    .delete()
+    .eq("id", osId);
+
+  if (error) {
+    throw new Error(`Erro ao excluir OS: ${error.message}`);
+  }
+
+  revalidatePath("/");
+  revalidatePath("/financeiro");
+  redirect("/");
+}
+
 // ------------------------------------------------------------------
 // Etapas de produção (checklist livre por OS)
 // ------------------------------------------------------------------

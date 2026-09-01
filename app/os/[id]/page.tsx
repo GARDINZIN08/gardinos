@@ -5,6 +5,7 @@ import { adicionarEtapa, salvarValorOS } from "@/lib/actions";
 import StatusBadge from "@/components/StatusBadge";
 import SeletorStatus from "@/components/SeletorStatus";
 import AcoesEtapa from "@/components/AcoesEtapa";
+import ExcluirOS from "@/components/ExcluirOS";
 import { EtapaProducao, OrdemServico } from "@/lib/tipos";
 
 export const dynamic = "force-dynamic";
@@ -83,10 +84,13 @@ export default async function DetalheOSPage({
           <h1 className="text-xl font-bold">OS #{os.numero}</h1>
           <StatusBadge status={os.status} />
         </div>
-        <p className="text-sm text-neutral-500">
-          Criada em {formatarDataHora(os.data_criacao)}
-          {os.criado_por ? ` por ${os.criado_por}` : ""}
-        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-neutral-500">
+            Criada em {formatarDataHora(os.data_criacao)}
+            {os.criado_por ? ` por ${os.criado_por}` : ""}
+          </p>
+          <ExcluirOS osId={os.id} osNumero={os.numero} />
+        </div>
       </div>
 
       <div className="bg-white rounded shadow-sm p-4 flex flex-col gap-2">
