@@ -6,7 +6,7 @@ import StatusBadge from "@/components/StatusBadge";
 import SeletorStatus from "@/components/SeletorStatus";
 import AcoesEtapa from "@/components/AcoesEtapa";
 import ExcluirOS from "@/components/ExcluirOS";
-import { EtapaProducao, OrdemServico } from "@/lib/tipos";
+import { EtapaProducao, LIMITE_VALOR_PUBLICO, OrdemServico } from "@/lib/tipos";
 
 export const dynamic = "force-dynamic";
 
@@ -163,31 +163,47 @@ export default async function DetalheOSPage({
             Gerar PDF
           </a>
         </div>
-        <form action={salvarValorComId} className="flex gap-2 items-center">
-          <span className="text-sm text-neutral-500">R$</span>
-          <input
-            name="valor_total"
-            type="number"
-            step="0.01"
-            min="0"
-            defaultValue={valorAtual}
-            className="flex-1 border rounded px-3 py-2"
-          />
-          <button
-            type="submit"
-            className="bg-marca-preto text-marca-branco px-3 py-2 rounded text-sm font-semibold hover:bg-marca-dourado hover:text-marca-preto transition"
-          >
-            Salvar
-          </button>
-        </form>
-        <p className="text-xs text-neutral-400 mt-2">
-          Valor atual: {formatarMoeda(valorAtual)}. Controle de pagamento
-          (pago/não pago) fica em{" "}
-          <Link href={`/financeiro/${os.id}`} className="underline">
-            Financeiro
-          </Link>{" "}
-          (protegido por senha).
-        </p>
+        {valorAtual <= LIMITE_VALOR_PUBLICO ? (
+          <>
+            <form action={salvarValorComId} className="flex gap-2 items-center">
+              <span className="text-sm text-neutral-500">R$</span>
+              <input
+                name="valor_total"
+                type="number"
+                step="0.01"
+                min="0"
+                max={LIMITE_VALOR_PUBLICO}
+                defaultValue={valorAtual}
+                className="flex-1 border rounded px-3 py-2"
+              />
+              <button
+                type="submit"
+                className="bg-marca-preto text-marca-branco px-3 py-2 rounded text-sm font-semibold hover:bg-marca-dourado hover:text-marca-preto transition"
+              >
+                Salvar
+              </button>
+            </form>
+            <p className="text-xs text-neutral-400 mt-2">
+              Valor atual: {formatarMoeda(valorAtual)}. Valores acima de{" "}
+              {formatarMoeda(LIMITE_VALOR_PUBLICO)} só podem ser definidos
+              pelo{" "}
+              <Link href={`/financeiro/${os.id}`} className="underline">
+                Financeiro
+              </Link>{" "}
+              (protegido por senha). Controle de pagamento (pago/não pago)
+              também fica lá.
+            </p>
+          </>
+        ) : (
+          <p className="text-sm text-neutral-500">
+            Valor acima de {formatarMoeda(LIMITE_VALOR_PUBLICO)} — disponível
+            só na aba{" "}
+            <Link href={`/financeiro/${os.id}`} className="underline">
+              Financeiro
+            </Link>{" "}
+            (protegida por senha).
+          </p>
+        )}
       </div>
 
       <div className="bg-white rounded shadow-sm p-4">

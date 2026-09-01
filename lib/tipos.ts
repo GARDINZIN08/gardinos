@@ -1,3 +1,8 @@
+// Limite combinado com o usuário: valores até esse teto podem ficar
+// visíveis/editáveis direto na tela da OS (sem senha). Acima disso, só a
+// aba Financeiro (com senha) pode definir ou mostrar o valor.
+export const LIMITE_VALOR_PUBLICO = 1000;
+
 export type StatusOS = "aguardando" | "em_producao" | "pronto" | "entregue";
 
 export type StatusPagamento = "nao_pago" | "pago_parcial" | "pago";

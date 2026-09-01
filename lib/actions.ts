@@ -15,7 +15,7 @@ import {
   DURACAO_COOKIE_SEGUNDOS,
   criarTokenAcesso,
 } from "@/lib/acessoAuth";
-import { StatusOS, StatusPagamento } from "@/lib/tipos";
+import { LIMITE_VALOR_PUBLICO, StatusOS, StatusPagamento } from "@/lib/tipos";
 
 // Compara duas senhas em tempo constante (evita "timing attack"), sem
 // quebrar quando os textos têm tamanhos diferentes — por isso comparamos
@@ -90,6 +90,11 @@ export async function salvarValorOS(osId: string, formData: FormData) {
 
   if (Number.isNaN(valor_total) || valor_total < 0) {
     throw new Error("Valor inválido.");
+  }
+  if (valor_total > LIMITE_VALOR_PUBLICO) {
+    throw new Error(
+      `Valores acima de R$ ${LIMITE_VALOR_PUBLICO},00 só podem ser definidos pela aba Financeiro (protegida por senha).`
+    );
   }
 
   // Upsert parcial: só mexe em valor_total. Se já existir um registro
