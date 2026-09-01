@@ -49,7 +49,12 @@ export async function GET(
     })
   );
 
-  return new NextResponse(buffer, {
+  // O TypeScript, nas versões mais novas, não reconhece automaticamente
+  // que um Buffer do Node serve como corpo de resposta (ele espera um dos
+  // tipos "de navegador" como Blob/Uint8Array<ArrayBuffer>/URLSearchParams).
+  // Na prática funciona normalmente — é só um ajuste de tipo, sem efeito
+  // no comportamento real.
+  return new NextResponse(buffer as unknown as BodyInit, {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": `inline; filename="OS-${os.numero}.pdf"`,
