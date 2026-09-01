@@ -1,5 +1,10 @@
 import { Document, Page, View, Text, StyleSheet } from "@react-pdf/renderer";
-import { EtapaProducao, OrdemServico, STATUS_OS_LABEL } from "@/lib/tipos";
+import {
+  EtapaProducao,
+  LIMITE_VALOR_PUBLICO,
+  OrdemServico,
+  STATUS_OS_LABEL,
+} from "@/lib/tipos";
 
 // Documento no padrão visual da Gardin Comunicação Visual:
 // faixa preta no topo, detalhes em dourado, tabela de informações
@@ -164,6 +169,12 @@ export function OrdemServicoPdf({
 }) {
   const linhasDescricao = paraLinhas(os.descricao);
   const linhasObservacoes = paraLinhas(os.observacoes);
+  // Combinado com o usuário: a faixa de valor só aparece no PDF impresso
+  // para valores dentro do teto público (mesmo limite usado na tela da OS
+  // pra decidir o que pode ser editado sem senha do Financeiro). Valores
+  // acima do teto são sensíveis e ficam só na aba Financeiro (com senha) —
+  // não saem no PDF.
+  const mostrarValor = valor <= LIMITE_VALOR_PUBLICO;
 
   return (
     <Document title={`OS ${os.numero} - ${os.cliente}`}>
@@ -243,10 +254,12 @@ export function OrdemServicoPdf({
           </>
         )}
 
-        <View style={styles.faixaValor}>
-          <Text style={styles.faixaValorLabel}>VALOR</Text>
-          <Text style={styles.faixaValorValor}>{formatarMoeda(valor)}</Text>
-        </View>
+        {mostrarValor && (
+          <View style={styles.faixaValor}>
+            <Text style={styles.faixaValorLabel}>VALOR</Text>
+            <Text style={styles.faixaValorValor}>{formatarMoeda(valor)}</Text>
+          </View>
+        )}
 
         <Text style={styles.rodape}>
           Gardin Comunicação Visual — documento gerado em{" "}
