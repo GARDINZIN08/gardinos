@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --marca-preto: #111111;
+  --marca-dourado: #d4af37;
+  --marca-branco: #ffffff;
+}
+
+body {
+  background-color: #f5f5f4;
+  color: var(--marca-preto);
+}
