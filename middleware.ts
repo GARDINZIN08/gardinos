@@ -28,6 +28,6 @@ export const config = {
     // Roda em tudo, EXCETO: arquivos estáticos internos do Next, o
     // favicon e a própria página/ação de login (senão ninguém consegue
     // nem ver o formulário de senha).
-    "/((?!_next/static|_next/image|favicon.ico|entrar).*)",
+    "/((?!_next/static|_next/image|favicon.ico|entrar|api/keep-alive).*)",
   ],
 };
